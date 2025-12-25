@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>成绩管理教学网站</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <h1>成绩管理教学网站</h1>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#home" class="nav-link active">首页</a></li>
+                    <li><a href="#courses" class="nav-link">课程</a></li>
+                </ul>
+            </nav>
+            <div class="user-actions">
+                <div id="userInfo" class="user-info" style="display: none;">
+                    <span id="userName"></span>
+                    <div class="dropdown">
+                        <button id="userDropdown" class="dropbtn">我的账户 ▼</button>
+                        <div id="dropdownContent" class="dropdown-content">
+                            <a href="#" id="dashboardLink">控制面板</a>
+                            <a href="#" id="logoutLink">退出登录</a>
+                        </div>
+                    </div>
+                </div>
+                <div id="loginSection" class="login-section">
+                    <button id="loginBtn" class="btn">登录</button>
+                    <button id="registerBtn" class="btn btn-outline">注册</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主要内容区 -->
+    <main>
+        <!-- 首页横幅 -->
+        <section id="home" class="hero">
+            <div class="container">
+                <h2>欢迎来到成绩管理教学网站</h2>
+                <p>为学生、教师和管理员提供全面的教学管理服务</p>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary" id="exploreBtn">探索课程</button>
+                    <button class="btn btn-outline" id="learnMoreBtn">查看课程</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 特色功能 -->
+        <section class="features">
+            <div class="container">
+                <h2>我们的特色功能</h2>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">📚</div>
+                        <h3>课程管理</h3>
+                        <p>教师可以轻松创建、管理和发布课程内容，包括文档、视频和音频课件。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📝</div>
+                        <h3>作业与考试</h3>
+                        <p>创建作业和考试，自动批改，减轻教师负担，提高教学效率。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <h3>成绩管理</h3>
+                        <p>全面的成绩管理系统，支持成绩录入、导入、审核和发布。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">👥</div>
+                        <h3>用户管理</h3>
+                        <p>支持管理员、教师和学生多角色管理，权限分明，安全可靠。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 课程列表 -->
+        <section id="courses" class="courses">
+            <div class="container">
+                <div class="section-header">
+                    <h2>课程列表</h2>
+                    <div class="search-filter">
+                        <div class="search-box">
+                            <input type="text" id="courseSearch" placeholder="搜索课程...">
+                            <button id="searchBtn"><i class="icon">🔍</i></button>
+                        </div>
+                        <div class="filter-box">
+                            <select id="categoryFilter">
+                                <option value="">所有分类</option>
+                                <option value="computer">计算机科学</option>
+                                <option value="math">数学</option>
+                                <option value="english">英语</option>
+                                <option value="physics">物理</option>
+                            </select>
+                            <select id="sortFilter">
+                                <option value="newest">最新发布</option>
+                                <option value="popular">最受欢迎</option>
+                                <option value="rating">评分最高</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div id="courseList" class="course-grid">
+                    <!-- 课程卡片将通过JavaScript动态生成 -->
+                </div>
+                <div id="noResults" class="no-results" style="display: none;">
+                    <h3>未找到匹配的课程</h3>
+                    <p>请尝试其他搜索关键词或筛选条件</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 登录模态框 -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>用户登录</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">用户名</label>
+                    <input type="text" id="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">密码</label>
+                    <input type="password" id="password" required>
+                </div>
+                <div class="form-group">
+                    <label for="userType">用户类型</label>
+                    <select id="userType">
+                        <option value="teacher">教师</option>
+                        <option value="admin">管理员</option>
+                    </select>
+                </div>
+                <div id="loginError" class="error-message" style="display: none;"></div>
+                <button type="submit" class="btn btn-primary">登录</button>
+                <div class="login-footer">
+                    <p>还没有账号? <a href="#" id="registerLink">立即注册</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 课程详情模态框 -->
+    <div id="courseModal" class="modal">
+        <div class="modal-content modal-large">
+            <span class="close">&times;</span>
+            <div id="courseDetail">
+                <!-- 课程详情将通过JavaScript动态生成 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 教师控制面板模态框 -->
+    <div id="teacherPanel" class="modal">
+        <div class="modal-content modal-large">
+            <span class="close">&times;</span>
+            <div class="panel-tabs">
+                <button class="tab-btn active" data-tab="courses">我的课程</button>
+                <button class="tab-btn" data-tab="assignments">作业管理</button>
+                <button class="tab-btn" data-tab="exams">考试管理</button>
+                <button class="tab-btn" data-tab="grades">成绩管理</button>
+            </div>
+            <div class="tab-content">
+                <div id="coursesTab" class="tab-pane active">
+                    <h3>我的课程</h3>
+                    <button id="addCourseBtn" class="btn btn-primary">添加新课程</button>
+                    <div id="teacherCourses" class="course-list">
+                        <!-- 课程列表将通过JavaScript动态生成 -->
+                    </div>
+                </div>
+                <div id="assignmentsTab" class="tab-pane">
+                    <h3>作业管理</h3>
+                    <div id="assignmentsList" class="list-content">
+                        <!-- 作业列表将通过JavaScript动态生成 -->
+                    </div>
+                </div>
+                <div id="examsTab" class="tab-pane">
+                    <h3>考试管理</h3>
+                    <div id="examsList" class="list-content">
+                        <!-- 考试列表将通过JavaScript动态生成 -->
+                    </div>
+                </div>
+                <div id="gradesTab" class="tab-pane">
+                    <h3>成绩管理</h3>
+                    <div class="grade-settings">
+                        <h4>成绩构成设置</h4>
+                        <div class="setting-group">
+                            <label>作业占比: <input type="number" id="assignmentWeight" min="0" max="100" value="30">%</label>
+                            <label>考试占比: <input type="number" id="examWeight" min="0" max="100" value="70">%</label>
+                        </div>
+                        <button id="saveGradeSettings" class="btn btn-primary">保存设置</button>
+                    </div>
+                    <div class="grade-actions">
+                        <button id="importGradesBtn" class="btn">导入成绩</button>
+                        <button id="exportGradesBtn" class="btn">导出成绩</button>
+                    </div>
+                    <div id="gradesTable" class="table-container">
+                        <!-- 成绩表格将通过JavaScript动态生成 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- 管理员控制面板模态框 -->
+    <div id="adminPanel" class="modal">
+        <div class="modal-content modal-large">
+            <span class="close">&times;</span>
+            <div class="panel-tabs">
+                <button class="tab-btn active" data-tab="users">用户管理</button>
+                <button class="tab-btn" data-tab="courses">课程管理</button>
+                <button class="tab-btn" data-tab="grades">成绩审核</button>
+                <button class="tab-btn" data-tab="logs">操作日志</button>
+                <button class="tab-btn" data-tab="settings">系统设置</button>
+            </div>
+            <div class="tab-content">
+                <div id="usersTab" class="tab-pane active">
+                    <h3>用户管理</h3>
+                    <div class="admin-actions">
+                        <button id="addUserBtn" class="btn btn-primary">添加用户</button>
+                        <button id="importUsersBtn" class="btn">批量导入用户</button>
+                    </div>
+                    <div id="usersTable" class="table-container">
+                        <!-- 用户表格将通过JavaScript动态生成 -->
+                    </div>
+                </div>
+                <div id="adminCoursesTab" class="tab-pane">
+                    <h3>课程管理</h3>
+                    <div class="admin-actions">
+                        <button id="newSemesterBtn" class="btn btn-primary">新学期设置</button>
+                    </div>
+                    <div id="adminCourses" class="list-content">
+                        <!-- 课程管理列表将通过JavaScript动态生成 -->
+                    </div>
+                </div>
+                <div id="adminGradesTab" class="tab-pane">
+                    <h3>成绩审核</h3>
+                    <div id="gradeReview" class="table-container">
+                        <!-- 成绩审核表格将通过JavaScript动态生成 -->
+                    </div>
+                </div>
+                <div id="logsTab" class="tab-pane">
+                    <h3>操作日志</h3>
+                    <div class="filter-options">
+                        <select id="logTypeFilter">
+                            <option value="">所有类型</option>
+                            <option value="login">登录</option>
+                            <option value="course">课程操作</option>
+                            <option value="grade">成绩操作</option>
+                            <option value="system">系统操作</option>
+                        </select>
+                        <input type="date" id="logDateFilter" placeholder="选择日期">
+                        <button id="filterLogsBtn" class="btn">筛选</button>
+                    </div>
+                    <div id="logsTable" class="table-container">
+                        <!-- 操作日志表格将通过JavaScript动态生成 -->
+                    </div>
+                </div>
+                <div id="settingsTab" class="tab-pane">
+                    <h3>系统设置</h3>
+                    <form id="systemSettingsForm">
+                        <div class="setting-item">
+                            <label for="systemName">系统名称</label>
+                            <input type="text" id="systemName" value="成绩管理教学网站">
+                        </div>
+                        <div class="setting-item">
+                            <label for="maxLoginAttempts">最大登录尝试次数</label>
+                            <input type="number" id="maxLoginAttempts" min="1" max="10" value="3">
+                        </div>
+                        <div class="setting-item">
+                            <label for="accountLockTime">账户锁定时间(分钟)</label>
+                            <input type="number" id="accountLockTime" min="1" max="60" value="5">
+                        </div>
+                        <button type="submit" class="btn btn-primary">保存设置</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 添加/编辑课程模态框 -->
+    <div id="addCourseModal" class="modal">
+        <div class="modal-content modal-large">
+            <span class="close">&times;</span>
+            <h2 id="courseFormTitle">添加新课程</h2>
+            <form id="courseForm">
+                <div class="form-group">
+                    <label for="courseName">课程名称</label>
+                    <input type="text" id="courseName" required>
+                </div>
+                <div class="form-group">
+                    <label for="courseCode">课程代码</label>
+                    <input type="text" id="courseCode" required>
+                </div>
+                <div class="form-group">
+                    <label for="courseCategory">课程分类</label>
+                    <select id="courseCategory">
+                        <option value="computer">计算机科学</option>
+                        <option value="math">数学</option>
+                        <option value="english">英语</option>
+                        <option value="physics">物理</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="courseDescription">课程简介</label>
+                    <textarea id="courseDescription" rows="4"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="courseStatus">课程状态</label>
+                    <select id="courseStatus">
+                        <option value="draft">草稿</option>
+                        <option value="published">已发布</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>课程资料</label>
+                    <div class="file-upload">
+                        <button type="button" class="btn" id="uploadDocBtn">上传文档</button>
+                        <button type="button" class="btn" id="uploadVideoBtn">上传视频</button>
+                        <button type="button" class="btn" id="uploadAudioBtn">上传音频</button>
+                    </div>
+                    <div id="uploadedFiles" class="uploaded-files">
+                        <!-- 已上传文件列表 -->
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn" id="saveDraftBtn">保存草稿</button>
+                    <button type="submit" class="btn btn-primary">发布课程</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 添加作业模态框 -->
+    <div id="addAssignmentModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>添加作业</h2>
+            <form id="assignmentForm">
+                <div class="form-group">
+                    <label for="assignmentTitle">作业标题</label>
+                    <input type="text" id="assignmentTitle" required>
+                </div>
+                <div class="form-group">
+                    <label for="assignmentCourse">所属课程</label>
+                    <select id="assignmentCourse">
+                        <!-- 课程选项将通过JavaScript动态生成 -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="assignmentDescription">作业描述</label>
+                    <textarea id="assignmentDescription" rows="4"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="assignmentDeadline">截止日期</label>
+                    <input type="datetime-local" id="assignmentDeadline" required>
+                </div>
+                <div class="form-group">
+                    <label for="assignmentWeight">权重</label>
+                    <input type="number" id="assignmentWeight" min="0" max="100" value="10">
+                </div>
+                <button type="submit" class="btn btn-primary">发布作业</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 添加考试模态框 -->
+    <div id="addExamModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>添加考试</h2>
+            <form id="examForm">
+                <div class="form-group">
+                    <label for="examTitle">考试标题</label>
+                    <input type="text" id="examTitle" required>
+                </div>
+                <div class="form-group">
+                    <label for="examCourse">所属课程</label>
+                    <select id="examCourse">
+                        <!-- 课程选项将通过JavaScript动态生成 -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="examDescription">考试说明</label>
+                    <textarea id="examDescription" rows="4"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="examStartTime">开始时间</label>
+                    <input type="datetime-local" id="examStartTime" required>
+                </div>
+                <div class="form-group">
+                    <label for="examDuration">考试时长(分钟)</label>
+                    <input type="number" id="examDuration" min="1" value="60">
+                </div>
+                <div class="form-group">
+                    <label for="examWeight">权重</label>
+                    <input type="number" id="examWeight" min="0" max="100" value="30">
+                </div>
+                <button type="submit" class="btn btn-primary">发布考试</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 成功提示 -->
+    <div id="successToast" class="toast toast-success">
+        <span id="successMessage"></span>
+    </div>
+
+    <!-- 错误提示 -->
+    <div id="errorToast" class="toast toast-error">
+        <span id="errorMessage"></span>
+    </div>
+
+    <script src="成绩管理系统.js"></script>
+</body>
+</html>
