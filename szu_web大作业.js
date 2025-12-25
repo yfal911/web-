@@ -435,9 +435,6 @@ function loadCourses() {
         const courseCard = document.createElement('div');
         courseCard.className = 'course-card';
         courseCard.innerHTML = `
-            <div class="course-image">
-                <img src="https://picsum.photos/seed/course${course.id}/400/300.jpg" alt="${course.name}">
-            </div>
             <div class="course-info">
                 <h3 class="course-title">${course.name}</h3>
                 <span class="course-category">${getCategoryName(course.category)}</span>
